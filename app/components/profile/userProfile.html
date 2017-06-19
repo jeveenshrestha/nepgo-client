@@ -1,0 +1,97 @@
+<section class="content-header">
+    <h1>
+        User Profile
+    </h1>
+</section>
+
+<!-- Main content -->
+<section class="content">
+
+    <div class="row">
+        <div class="col-md-12">
+
+            <!-- Profile Image -->
+            <div class="box box-widget widget-user">
+                <!-- Add the bg color to the header using any of the bg-* classes -->
+                <div class="widget-user-header bg-white">
+                    <h3 class="widget-user-username">{{userProfile.name}}</h3>
+                    <h5 class="widget-user-desc">{{userProfile.profession}}</h5>
+                </div>
+            </div>
+            <!-- /.box -->
+
+            <!-- About Me Box -->
+            <div class="box box-primary">
+                <div style="width: 80%; margin-right:auto; margin-left:auto; padding-top: 5px; border-radius: 5px 5px;" class="bg-success text-center row" ng-show="successfulEdited">
+                    <div class="col-md-11">
+                        <h4>Saved changes</h4>
+                    </div>
+                    <div class="col-md-1">
+                        <span ng-click="successfulEdited = false" class="glyphicon glyphicon-remove"></span>
+                    </div>
+                </div>
+                <div class="box-header with-border row">
+                    <div class="col-md-10 col-sm-5 col-xs-5">
+                        <h3 class="box-title">About Me</h3>
+                    </div>
+                    <div class="col-md-2 col-sm-5 col-xs-4" ng-if="userProfile._id == currentUser._id">
+                        <a class="btn btn-primary" ng-if="!editorEnabled" ng-click="edit()">Edit <span class="glyphicon glyphicon-edit"></span></a>
+                        <a class="btn btn-success" ng-if="editorEnabled" ng-click="save()">Done <span class="glyphicon glyphicon-ok"></span></a>
+                    </div>
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body">
+                    <div>
+                        <strong><i class="fa fa-book margin-r-5"></i> Education</strong>
+                        <ul style="list-style: none;" ng-if="userProfile.educations.length == 0 && !editorEnabled">
+                            <li>No education, edit to add education</li>
+                        </ul>
+                        <ul ng-if="!editorEnabled" ng-repeat="education in userProfile.educations">
+                            <li style="display: inline; width:10em; white-space: -moz-pre-wrap !important;white-space: -pre-wrap;white-space: -o-pre-wrap;white-space: pre-wrap;word-wrap: break-word;white-space: -webkit-pre-wrap;word-break: break-all;white-space: normal;" class="label label-info">{{education}}</li>
+                        </ul>
+                        <textarea ng-if="editorEnabled" class="form-control" ng-list type="text" ng-model="profile.educations"></textarea>
+                    </div>
+                    <hr>
+                    <div>
+                        <strong><i class="fa fa-pencil margin-r-5"></i> Skills</strong>
+                        <ul style="list-style: none;" ng-if="userProfile.skills.length == 0 && !editorEnabled">
+                            <li>No skills, edit to add skills</li>
+                        </ul>
+                        <ul ng-if="!editorEnabled" ng-repeat="skill in userProfile.skills">
+                            <li style="display: inline; width:10em; white-space: -moz-pre-wrap !important;white-space: -pre-wrap;white-space: -o-pre-wrap;white-space: pre-wrap;word-wrap: break-word;white-space: -webkit-pre-wrap;word-break: break-all;white-space: normal;" class="label label-info">{{skill}}</li>
+                        </ul>
+                        <textarea ng-if="editorEnabled" class="form-control" ng-list type="text" ng-model="profile.skills"></textarea>
+                    </div>
+
+                    <hr>
+                    <div>
+                        <strong><i class="fa fa-pencil margin-r-5"></i> Experiences</strong>
+                        <ul style="list-style: none;" ng-if="userProfile.experiences.length == 0 && !editorEnabled">
+                            <li>No experience, edit to add experience</li>
+                        </ul>
+                        <ul ng-if="!editorEnabled" ng-repeat="experience in userProfile.experiences">
+                            <li style="display: inline; width:10em; white-space: -moz-pre-wrap !important;white-space: -pre-wrap;white-space: -o-pre-wrap;white-space: pre-wrap;word-wrap: break-word;white-space: -webkit-pre-wrap;word-break: break-all;white-space: normal;" class="label label-info">{{experience}}</li>
+                        </ul>
+                        <textarea ng-if="editorEnabled" class="form-control" ng-list type="text" ng-model="profile.experiences"></textarea>
+                    </div>
+
+                    <hr>
+                    <div>
+                        <strong><i class="fa fa-file-text-o margin-r-5"></i> Notes</strong>
+                        <ul style="list-style: none;" ng-if="userProfile.extra_info == '' && !editorEnabled">
+                            <li>edit to write something about yourself</li>
+                        </ul>
+                        <ul ng-if="!editorEnabled" style="list-style: none">
+                            <li>{{userProfile.extra_info}}</li>
+                        </ul>
+                        <textarea ng-if="editorEnabled" class="form-control" type="text" ng-model="profile.extra_info"></textarea>
+                    </div>
+                </div>
+                <!-- /.box-body -->
+            </div>
+            <!-- /.box -->
+        </div>
+    </div>
+    <!-- /.row -->
+    <!-- Box Comment -->
+</section>

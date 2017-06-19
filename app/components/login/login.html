@@ -1,0 +1,41 @@
+<!-- /.login-logo -->
+<div class="container" style="width:98%; margin-left:auto; margin-right:auto;">
+    <div class="login-logo">
+        <a><b>NEP</b>GO</a>
+    </div>
+    <div class="well">
+        <h4 class="text-center text-muted">LOGIN TO POST ASSIGNMENTS</h4>
+    </div>
+
+    <form name="loginForm" ng-submit="login(credentials)">
+
+        <div class="form-group has-feedback" ng-class="{'has-error':loginForm.email.$touched && loginForm.email.$invalid}">
+            <input id="email" name="email" type="email" class="form-control" placeholder="Email" ng-model="credentials.email" required>
+            <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+            <div ng-messages="loginForm.email.$error" ng-show="loginForm.email.$touched">
+                <div ng-messages-include="app/shared/messages.html"></div>
+            </div>
+        </div>
+        <div class="form-group has-feedback" ng-class="{'has-error':loginForm.password.$touched && loginForm.password.$invalid}">
+            <input id="password" name="password" type="password" class="form-control" placeholder="Password" ng-model="credentials.password" required>
+            <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+            <div ng-messages="loginForm.password.$error" ng-show="loginForm.password.$touched">
+                <div ng-messages-include="app/shared/messages.html"></div>
+            </div>
+        </div>
+        <div ng-if="authErr.error">
+            <p class="text-danger text-right">{{authErr.text}}</p>
+        </div>
+        <div class="row">
+            <!-- /.col -->
+            <div class="col-xs-12">
+                <button type="submit" class="btn btn-primary btn-block btn-flat" ng-disabled="loginForm.$invalid">Sign In</button>
+            </div>
+            <!-- /.col -->
+        </div>
+    </form>
+    <a ui-sref="register">
+        <p class="text-center">Register a new membership</p>
+    </a>
+
+</div>

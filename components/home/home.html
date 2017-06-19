@@ -1,0 +1,66 @@
+<div ng-if="!$state.is('home.profile')" ng-repeat="news in newsfeed" class="box box-widget container">
+    <div class="box-header with-border">
+        <div class="user-block">
+            <img class="img-circle" src="http://www.imran.com/xyper_images/icon-user-default.png" alt="User Image">
+            <span class="username"><a ng-click="getProfile(news.user._id)">{{news.user.name}}</a></span>
+            <span class="description">Shared publicly - {{news.created}}</span>
+        </div>
+        <!-- /.user-block -->
+    </div>
+    <!-- /.box-header -->
+    <div class="box-body mx-auto">
+        <!-- post text -->
+        <h3>{{news.vacancy.title}}</h3>
+        <p>{{news.vacancy.description}}</p>
+
+        <!-- Social sharing buttons -->
+        <button type="button" class="btn btn-default btn-xs"><i class="fa fa-share"></i> Share</button>
+        <button type="button" class="btn btn-default btn-xs"><i class="fa fa-thumbs-o-up"></i> Like</button>
+        <span class="pull-right text-muted">45 likes - 2 comments</span>
+    </div>
+    <!-- /.box-body -->
+    <div class="box-footer box-comments">
+        <div class="box-comment">
+            <!-- User image -->
+            <img class="img-circle img-sm" src="http://www.imran.com/xyper_images/icon-user-default.png" alt="User Image">
+
+            <div class="comment-text">
+                <span class="username">
+                        Sanisha
+                        <span class="text-muted pull-right">8:03 PM Today</span>
+                </span>
+                <!-- /.username -->
+                I am interested. How should I apply?
+            </div>
+            <!-- /.comment-text -->
+        </div>
+        <!-- /.box-comment -->
+        <div class="box-comment">
+            <!-- User image -->
+            <img class="img-circle img-sm" src="http://www.imran.com/xyper_images/icon-user-default.png" alt="User Image">
+
+            <div class="comment-text">
+                <span class="username">
+                        Jeveen
+                        <span class="text-muted pull-right">8:03 PM Today</span>
+                </span>
+                <!-- /.username -->
+                I will send you all the details through email.
+            </div>
+            <!-- /.comment-text -->
+        </div>
+        <!-- /.box-comment -->
+    </div>
+    <!-- /.box-footer -->
+    <div class="box-footer">
+        <form action="#" method="post">
+            <img class="img-responsive img-circle img-sm" src="http://www.imran.com/xyper_images/icon-user-default.png" alt="Alt Text">
+            <!-- .img-push is used to add margin to elements next to floating images -->
+            <div class="img-push">
+                <input type="text" class="form-control input-sm" placeholder="Press enter to post comment">
+            </div>
+        </form>
+    </div>
+    <!-- /.box-footer -->
+</div>
+<div ui-view></div>
