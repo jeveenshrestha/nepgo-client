@@ -1,6 +1,6 @@
 <div class="container" style="width: 98%; margin-left:auto; margin-right:auto;">
     <div style="width: 80%; margin-right:auto; margin-left:auto; padding-top: 5px; border-radius: 5px 5px;" class="bg-success text-center row" ng-show="assignmentPosted">
-        <div class="col-md-11">
+        <div ng-if="currentUser" class="col-md-11">
             <h4>Assignment posted successfully !!</h4>
         </div>
         <div class="col-md-1">
@@ -10,35 +10,76 @@
     <div ng-if="!$state.is('home.profile') && !$state.is('home.userProfile') && !$state.is('home.sector') && currentUser" style="padding:20px">
         <button class="pull-right btn btn-primary btn-flat" ng-click="postAssignment = !postAssignment"> Post an Assignment  <i ng-if="postAssignment" style="word-spacing: 20px;" class="fa fa-caret-down"></i><i ng-if="!postAssignment" style="word-spacing: 20px;" class="fa fa-caret-up"></i>  </button>
 
-        <form name="statusForm" ng-submit="postStatus(status)" ng-show="postAssignment">
-            <h4>Assignment</h4>
-            <div class="form-group has-feedback">
-                <input type="text" class="form-control" placeholder="title" ng-model="status.title">
-            </div>
-            <div class="form-group">
-                <textarea class="form-control" rows="3" placeholder="Description..." ng-model="status.description"></textarea>
-            </div>
-            <div class="row">
-                <div class="col-md-4 col-sm-12 form-group has-feedback">
-                    <label>Sectors</label>
-                    <select ng-options="sector._id as sector.name for sector in sectors" ng-model="status.sector"></select>
-                </div>
-                <div class="col-md-4 col-sm-12 form-group has-feedback">
-                    <input type="date" class="form-control" data-date-format="MM-DD-YYYY" placeholder="startDate MM/DD/YYYY" ng-model="selectedDate.starts_at">
-                </div>
-                <div class="col-md-4 col-sm-12 form-group has-feedback">
-                    <input type="date" class="form-control" data-date-format="MM-DD-YYYY" placeholder="endDate MM/DD/YYYY" ng-model="selectedDate.ends_at">
-                </div>
-            </div>
+        <div style="margin-top:40px;" ng-show="postAssignment">
+            <!-- Custom Tabs -->
+            <div class="nav-tabs-custom">
+                <ul class="nav nav-tabs">
+                    <li class="active"><a href="#tab_1" ng-click="$event.preventDefault()" data-toggle="tab">Post</a></li>
+                    <li><a href="#tab_2" ng-click="$event.preventDefault()" data-toggle="tab">Upload</a></li>
+                </ul>
+                <div class="tab-content">
+                    <div class="tab-pane active" id="tab_1">
+                        <form name="statusForm" ng-submit="postStatus(status)">
+                            <h4>Assignment</h4>
+                            <div class="form-group has-feedback">
+                                <input type="text" class="form-control" placeholder="title" ng-model="status.title">
+                            </div>
+                            <div class="form-group">
+                                <textarea class="form-control" rows="3" placeholder="Description..." ng-model="status.description"></textarea>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 col-sm-12 form-group has-feedback">
+                                    <label>Sectors</label>
+                                    <select ng-options="sector for sector in sectors" ng-model="selectedSector" ng-change="assignSector(selectedSector)"></select>
+                                </div>
+                                <div class="col-md-6 col-sm-12 form-group has-feedback">
+                                    <label>Role</label>
+                                    <select ng-options="role for role in roles" ng-model="selectedRole" ng-change="assignRole(selectedRole)"></select>
+                                </div>
+                            </div>
 
-            <div class="row">
-                <!-- /.col -->
-                <div class="col-xs-12">
-                    <button type="submit" class="pull-right btn btn-primary btn-flat">Post</button>
+                            <div class="row">
+                                <!-- /.col -->
+                                <div class="col-xs-12">
+                                    <button type="submit" class="pull-right btn btn-primary btn-flat">Post</button>
+                                </div>
+                                <!-- /.col -->
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- /.tab-pane -->
+                    <div class="tab-pane" id="tab_2">
+
+                        <input type="file" id="file-input">
+                        <p id="status">Please select a file</p>
+                        <img id="preview" src="dist/img/avatar.png">
+
+                        <form ng-submit="uploadToS3($event)">
+                            <input type="hidden" id="avatar-url" ng-model="file" name="avatar-url" value="/images/default.png">
+                            <input type="text" name="username" placeholder="Username"><br>
+                            <input type="text" name="full-name" placeholder="Full name"><br><br>
+                            <input type="submit" value="Update">
+                        </form>
+                        <!-- /.tab-pane -->
+                    </div>
                 </div>
-                <!-- /.col -->
+                <!-- /.tab-content -->
             </div>
-        </form>
+            <!-- nav-tabs-custom -->
+        </div>
+
+
+
+
+
+
+
+
+
+
+
+
     </div>
 
     <div ng-if="!$state.is('home.profile') && !$state.is('home.userProfile') && !$state.is('home.sector')" ng-repeat="news in newsfeed | orderBy: 'created':true | filter:searchPost" style="padding: 20px">
@@ -46,17 +87,20 @@
             <div class="user-block">
                 <img class="img-circle" src="dist/img/avatar.png" alt="User Image">
                 <span class="username">
-                <a ui-sref="home.userProfile({userId: news.vacancy.user._id})">
-                    {{news.vacancy.user.name }}
+                <a ui-sref="home.userProfile({userId: news.user._id})">
+                    {{news.user.name }}
                 </a>  
                 <i style="word-spacing: 20px;" class="fa fa-caret-right"></i>  
-                <span style="margin-left: 5px; margin-right: 5px;">{{news.vacancy.user.role | uppercase}}</span>
+                <span style="margin-left: 5px; margin-right: 5px;">{{news.role | uppercase}}</span>
                 </span>
                 <span class="description">
                 posted in 
-                <a ng-click="getNewsfeedBySector(news.sector)">
-                    {{news.vacancy.sector | sectorFilter}}
-                </a> sector - {{news.vacancy.updated}}
+                <a>
+                    {{news.sector}}
+                </a> sector - {{news.updated}}
+                <a ng-if="news.user._id == currentUser._id" ng-click="deletePost(news._id)">
+                    <i style="float: right; margin-top:-18px" class="fa fa-trash-o fa-2x" aria-hidden="true"></i>
+                </a>
             </span>
             </div>
             <!-- /.user-block -->
@@ -64,8 +108,8 @@
         <!-- /.box-header -->
         <div class="box-body mx-auto">
             <!-- post text -->
-            <h3>{{news.vacancy.title}}</h3>
-            <p class="text-justify">{{news.vacancy.description}}</p>
+            <h3>{{news.title}}</h3>
+            <p class="text-justify">{{news.description}}</p>
 
             <!-- Social sharing buttons -->
             <button type="button" class="btn btn-default btn-xs" ng-click="likePost(news._id, $index)"><i class="fa fa-thumbs-o-up"></i> Like</button>
@@ -81,8 +125,11 @@
                     <span class="username">
                         {{comment.user.name}}
                         <i style="word-spacing: 20px;" class="fa fa-caret-right"></i>  
-                <span style="margin-left: 5px; margin-right: 5px;">{{comment.user.role | uppercase}}</span>
+                        <span style="margin-left: 5px; margin-right: 5px;">{{comment.role | uppercase}}</span>
                     <span class="text-muted pull-right">{{comment.updated}}</span>
+                    <a ng-if="comment.user._id == currentUser._id" ng-click="deleteComment(news._id, comment._id)">
+                        <i style="float: right;" class="fa fa-trash-o" aria-hidden="true"></i>
+                    </a>
                     </span>
                     <!-- /.username -->
                     {{comment.text}}
@@ -93,13 +140,25 @@
         </div>
         <!-- /.box-footer -->
         <div class="box-footer">
-            <div>
+
+            <form name="commentForm" ng-submit="postComment(news._id)">
                 <img class="img-responsive img-circle img-sm" src="dist/img/avatar.png" alt="Alt Text">
                 <!-- .img-push is used to add margin to elements next to floating images -->
                 <div class="img-push">
-                    <input type="text" class="form-control input-sm" ng-keypress="($event.charCode==13)? postComment($event,news._id) : return" placeholder="Press enter to post comment">
+                    <input type="text" class="form-control input-sm" id="commentText" placeholder="Press enter to post comment">
+                    <div style="padding:5px;float:left" class="col-md-6 col-sm-6 form-group has-feedback">
+                        <label>Role</label>
+                        <select ng-options="role for role in roles" ng-model="selectedRole" ng-change="assignRoleForComment(selectedRole)"></select>
+                    </div>
                 </div>
-            </div>
+                <div class="row">
+                    <!-- /.col -->
+                    <div class="col-xs-12">
+                        <button type="submit" class="pull-right btn btn-primary btn-flat">Comment</button>
+                    </div>
+                    <!-- /.col -->
+                </div>
+            </form>
         </div>
         <!-- /.box-footer -->
     </div>

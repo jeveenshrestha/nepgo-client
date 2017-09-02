@@ -39,42 +39,51 @@ constant('AUTH_EVENTS', {
             .state('login', {
                 url: '/login',
                 templateUrl: 'app/components/login/login.html',
-                controller: 'LoginController'
-                    // data: {
-                    //     authorizedRoles: [USER_ROLES.guest]
-                    // }
+                controller: 'LoginController',
+                data: {
+                    authenticationRequired: false
+                }
             })
             .state('register', {
                 url: '/register',
                 templateUrl: 'app/components/register/register.html',
-                controller: 'registerController'
-                    // data: {
-                    //     authorizedRoles: [USER_ROLES.user]
-                    // }
+                controller: 'registerController',
+                data: {
+                    authenticationRequired: false
+                }
             })
             .state('home', {
                 url: '/home',
                 templateUrl: 'app/components/home/home.html',
-                controller: 'homeController'
-                    // data: {
-                    //     authorizedRoles: [USER_ROLES.user]
-                    // }
+                controller: 'homeController',
+                data: {
+                    authenticationRequired: true
+                }
             })
             .state('timeline', {
                 url: '/timeline',
                 templateUrl: 'app/components/timeline/timeline.html',
-                controller: 'timelineController'
+                controller: 'timelineController',
+                data: {
+                    authenticationRequired: true
+                }
             })
             .state('home.profile', {
                 parent: 'home',
                 url: '/profile',
                 templateUrl: 'app/components/profile/profile.html',
-                controller: 'profileController'
+                controller: 'profileController',
+                data: {
+                    authenticationRequired: true
+                }
             })
             .state('userProfile', {
                 url: '/userProfile',
                 templateUrl: 'app/shared/userProfile.html',
-                controller: 'ApplicationController'
+                controller: 'ApplicationController',
+                data: {
+                    authenticationRequired: true
+                }
             });
     })
     .factory('AuthInterceptor', function($rootScope, $q, AUTH_EVENTS) {
@@ -89,20 +98,16 @@ constant('AUTH_EVENTS', {
                 return $q.reject(response);
             }
         };
+    })
+    .run(function($rootScope, AUTH_EVENTS, AuthService) {
+        $rootScope.$on('$stateChangeStart', function(event, toState) {
+            if (!AuthService.isAuthorized()) {
+                if (!toState.data.authenticationRequired) {
+                    event.preventDefault();
+                }
+            }
+        })
     });
-// .run(function($rootScope, AUTH_EVENTS, AuthService) {
-//     $rootScope.$on('$stateChangeStart', function(event, next) {
-//         var authorizedRoles = next.data.authorizedRoles;
-//         if (!AuthService.isAuthorized(authorizedRoles)) {
-//             event.preventDefault();
-//             if (AuthService.isAuthenticated()) {
-//                 $rootScope.$broadcast(AUTH_EVENTS.notAuthorized);
-//             } else {
-//                 $rootScope.$broadcast(AUTH_EVENTS.notAuthenticated);
-//             }
-//         }
-//     })
-// });
 
 var controllersModule = angular.module('nepgoApp.controllers', []);
 var servicesModule = angular.module('nepgoApp.services', []);

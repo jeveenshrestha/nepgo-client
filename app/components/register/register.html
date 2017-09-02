@@ -26,19 +26,37 @@
             </div>
         </div>
         <div class="form-group has-feedback" ng-class="{'has-error':registerForm.confirmPassword.$touched && registerForm.confirmPassword.$invalid}">
-            <input name="confirmPassword" type="password" class="form-control" placeholder="Confirm password" ng-model="user.confirmPassword" required compare-to="user.password">
+            <input name="confirmPassword" type="password" class="form-control" placeholder="Confirm password" ng-model="user.confirm_password" required compare-to="user.password">
             <span class="glyphicon glyphicon-lock form-control-feedback"></span>
             <div ng-messages="registerForm.confirmPassword.$error" ng-show="registerForm.confirmPassword.$touched">
                 <div ng-messages-include="app/shared/messages.html"></div>
             </div>
         </div>
+        <label>Select your sectors</label>
         <div class="form-group has-feedback">
+            <div class="checkbox" ng-repeat="sector in sectors">
+                <label>
+                    <input type="checkbox" name="user.sectors[]" value="{{sector}}" ng-checked="user.sectors.indexOf(sector) > -1" ng-click="toggleCheckSector(sector)">
+                    {{sector}}
+                </label>
+            </div>
+        </div>
+        <label>Select your roles</label>
+        <div class="form-group has-feedback">
+            <div class="checkbox" ng-repeat="role in roles">
+                <label>
+                      <input type="checkbox" name="user.roles[]" value="{{role}}" ng-checked="user.roles.indexOf(role) > -1" ng-click="toggleCheckRole(role)">
+                      {{role}}
+                    </label>
+            </div>
+        </div>
+        <!-- <div class="form-group has-feedback">
             <label for="role">Role</label>
             <select name="role" id="role" ng-model="user.role" class="form-control">
                 <option ng-repeat="role in roles track by $index">{{role}}</option>
             </select>
         </div>
-        <!-- <div class="form-group has-feedback">
+        <div class="form-group has-feedback">
             <label>Country</label>
             <select name="country" id="country" ng-model="user.country" class="form-control">
                     <option ng-repeat="country in countries track by $index">{{country.iso}}</option>

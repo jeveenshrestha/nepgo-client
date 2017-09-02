@@ -6,7 +6,7 @@ servicesModule.factory('AuthService', ['$http', 'Session', '$rootScope', 'AUTH_E
 
         authService.login = function(credentials) {
             return $http
-                .post('https://nepgo.herokuapp.com/login', credentials)
+                .post('https://api-nepgo.herokuapp.com/login', credentials)
                 .then(function(res) {
                     Session.create(res.data.token, res.data.user);
                     return res.data.user;

@@ -131,11 +131,34 @@
                     <li class="header">MAIN NAVIGATION</li>
                     <li class="active treeview">
                         <a ui-sref="home">
-                            <i class="fa fa-dashboard"></i> <span>Newsfeed</span>
+                            <i ng-disabled="!currentUser" class="fa fa-dashboard"></i> <span>Newsfeed</span>
                             <span class="pull-right-container">
             </span>
                         </a>
                     </li>
+                    <!--<li class="header">SECTORS</li>
+                    <li class="active treeview">
+                        <a ng-click="getNewsfeedBySector('Education')">
+                            <i class="fa fa-graduation-cap"></i> <span>Education</span>
+                            <span class="pull-right-container"></span>
+                        </a>
+                        <a ng-click="getNewsfeedBySector('Engineering')">
+                            <i class="fa fa-university"></i> <span>Engineering</span>
+                            <span class="pull-right-container"></span>
+                        </a>
+                        <a ng-click="getNewsfeedBySector('Health services')">
+                            <i class="fa fa-medkit"></i> <span>Health services</span>
+                            <span class="pull-right-container"></span>
+                        </a>
+                        <a ng-click="getNewsfeedBySector('Social services')">
+                            <i class="fa fa-dashboard"></i> <span>Social services</span>
+                            <span class="pull-right-container"></span>
+                        </a>
+                        <a ng-click="getNewsfeedBySector('Sports')">
+                            <i class="fa fa-trophy"></i> <span>Sports</span>
+                            <span class="pull-right-container"></span>
+                        </a>
+                    </li>-->
                 </ul>
             </section>
             <!-- /.sidebar -->

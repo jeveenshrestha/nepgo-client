@@ -7,12 +7,15 @@ servicesModule.factory('Session', ['$http', '$window', function($http, $window) 
     factory.token = null;
     factory.currentUser = null;
 
-    factory.loadUserCredentials = function() {
+    factory.loadUserCredentials = function(callback) {
         var token = window.localStorage.getItem(LOCAL_TOKEN_KEY);
         var user = window.localStorage.getItem(CURRENT_USER);
         this.currentUser = JSON.parse(user);
         if (token) {
             this.useCredentials(token);
+        }
+        if (callback) {
+            callback();
         }
     }
 
@@ -29,13 +32,16 @@ servicesModule.factory('Session', ['$http', '$window', function($http, $window) 
         $http.defaults.headers.common.Authorization = authToken;
     };
 
-    factory.logout = function() {
+    factory.logout = function(callback) {
         authToken = undefined;
         isAuthenticated = false;
         $http.defaults.headers.common.Authorization = undefined;
         window.localStorage.removeItem(LOCAL_TOKEN_KEY);
         window.localStorage.clear();
         $window.location.reload();
+        if (callback) {
+            callback();
+        }
     };
 
     factory.loadUserCredentials();

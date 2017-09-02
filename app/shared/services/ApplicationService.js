@@ -3,7 +3,7 @@ servicesModule.factory('ApplicationService', ['$http', 'Session', function($http
 
     applicationService.getSectors = function() {
         return $http
-            .get('https://nepgo.herokuapp.com/sector')
+            .get('https://api-nepgo.herokuapp.com/sector')
             .then(function(res) {
                 return res.data;
             });
@@ -11,7 +11,7 @@ servicesModule.factory('ApplicationService', ['$http', 'Session', function($http
 
     applicationService.getRoles = function() {
         return $http
-            .get('https://nepgo.herokuapp.com/role')
+            .get('https://api-nepgo.herokuapp.com/role')
             .then(function(res) {
                 return res.data;
             });
@@ -19,7 +19,7 @@ servicesModule.factory('ApplicationService', ['$http', 'Session', function($http
 
     applicationService.getCountries = function() {
         return $http
-            .get('https://nepgo.herokuapp.com/country')
+            .get('https://api-nepgo.herokuapp.com/country')
             .then(function(res) {
                 return res.data;
             });

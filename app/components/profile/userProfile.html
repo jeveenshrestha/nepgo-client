@@ -40,7 +40,9 @@
                     </div>
                 </div>
                 <!-- /.box-header -->
-                <div class="box-body">
+
+                <!--When role is experts or volunteer-->
+                <div ng-if="userProfile.role == experts|| userProfile.role == volunteer" class="box-body">
                     <div>
                         <strong><i class="fa fa-book margin-r-5"></i> Education</strong>
                         <ul style="list-style: none;" ng-if="userProfile.educations.length == 0 && !editorEnabled">

@@ -4,7 +4,7 @@ servicesModule.service('profileService', ['$http', '$state', function($http, $st
     profileService.getUserDetails = function(id, token) {
         if (token) {
             return $http
-                .get('https://nepgo.herokuapp.com/user/' + id + '?token=' + token)
+                .get('https://api-nepgo.herokuapp.com/user?id=' + id + '&token=' + token)
                 .then(function(res) {
                     console.log(res.data);
                     return res.data;
@@ -17,7 +17,7 @@ servicesModule.service('profileService', ['$http', '$state', function($http, $st
     profileService.saveProfile = function(id, token, profile) {
         if (token) {
             return $http
-                .put('https://nepgo.herokuapp.com/user/' + id + '?token=' + token, profile)
+                .put('https://api-nepgo.herokuapp.com/user/' + id + '?token=' + token, profile)
                 .then(function(res) {
                     return res.data;
                 }, function(err) {

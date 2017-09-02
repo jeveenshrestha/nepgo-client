@@ -1,16 +1,17 @@
-servicesModule.service('homeService', ['$http', '$state', function($http, $state) {
+servicesModule.service('homeService', ['$http', '$state', 'Session', function($http, $state, Session) {
     var homeService = {};
+    homeService.currentUser = Session.currentUser;
 
     homeService.getNewsfeed = function(token) {
         if (token) {
             return $http
-                .get('https://nepgo.herokuapp.com/search?type=newsfeed&token=' + token)
+                .get('https://api-nepgo.herokuapp.com/post?token=' + token)
                 .then(function(res) {
                     return res.data;
                 });
         } else {
             return $http
-                .get('https://nepgo.herokuapp.com/search?type=newsfeed')
+                .get('https://api-nepgo.herokuapp.com/post')
                 .then(function(res) {
                     return res.data;
                 });
@@ -21,7 +22,7 @@ servicesModule.service('homeService', ['$http', '$state', function($http, $state
     homeService.likePost = function(token, id) {
         if (token) {
             return $http
-                .get('https://nepgo.herokuapp.com/newsfeed/' + id + '/like?token=' + token)
+                .put('https://api-nepgo.herokuapp.com/post/' + id + '/like?token=' + token)
                 .then(function(res) {
                     return res.data;
                 })
@@ -33,7 +34,7 @@ servicesModule.service('homeService', ['$http', '$state', function($http, $state
     homeService.postComment = function(token, id, commentObj) {
         if (token) {
             return $http
-                .post('https://nepgo.herokuapp.com/newsfeed/' + id + '/comment?token=' + token, commentObj)
+                .post('https://api-nepgo.herokuapp.com/post/' + id + '/comment?token=' + token, commentObj)
                 .then(function(res) {
                     return res.data;
                 })
@@ -44,11 +45,38 @@ servicesModule.service('homeService', ['$http', '$state', function($http, $state
     homeService.postStatus = function(token, status) {
         if (token) {
             return $http
-                .post('https://nepgo.herokuapp.com/vacancy?token=' + token, status)
+                .post('https://api-nepgo.herokuapp.com/post?token=' + token, status)
                 .then(function(res) {
                     return res.data;
                 }, function(err) {
                     return err.data.err;
+                })
+        } else {
+            $state.go('login');
+        }
+    }
+    homeService.deletePost = function(token, id) {
+        if (token) {
+            return $http
+                .delete('https://api-nepgo.herokuapp.com/post/' + id + '?token=' + token)
+                .then(function(res) {
+                    return res.data;
+                }, function(err) {
+
+                })
+        } else {
+            $state.go('login');
+        }
+    }
+
+    homeService.deleteComment = function(token, postId, commentId) {
+        if (token) {
+            return $http
+                .delete('https://api-nepgo.herokuapp.com/post/' + postId + '/comment/' + commentId + '?token=' + token)
+                .then(function(res) {
+                    return res.data;
+                }, function(err) {
+
                 })
         } else {
             $state.go('login');

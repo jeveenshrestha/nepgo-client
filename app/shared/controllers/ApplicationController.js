@@ -1,6 +1,7 @@
-controllersModule.controller('ApplicationController', ['$scope', 'USER_ROLES', 'AuthService', 'Session', 'ApplicationService', '$state', 'profileService',
-    function($scope, USER_ROLES, AuthService, Session, ApplicationService, $state, profileService) {
+controllersModule.controller('ApplicationController', ['$scope', 'USER_ROLES', 'AuthService', 'Session', 'ApplicationService', '$state', 'profileService', 'sectorService',
+    function($scope, USER_ROLES, AuthService, Session, ApplicationService, $state, profileService, sectorService) {
         $scope.currentUser = Session.currentUser;
+        $scope.newsfeed = [];
         $scope.userProfile = {};
         $scope.userRoles = null;
         $scope.sectors = [];
@@ -14,6 +15,17 @@ controllersModule.controller('ApplicationController', ['$scope', 'USER_ROLES', '
 
         $scope.searchPost = "";
 
+        $scope.getNewsfeedBySector = function(sector) {
+            if (token) {
+                sectorService.getNewsfeedBySector(token, sector).then(function(newsfeed) {
+                    sectorService.newsfeed = newsfeed;
+                    //$state.go('home.sector');
+                }, function() {});
+            } else {
+                $state.go('login');
+            }
+        }
+
         var getSectors = function() {
             ApplicationService.getSectors()
                 .then(function(sectors) {
@@ -21,9 +33,10 @@ controllersModule.controller('ApplicationController', ['$scope', 'USER_ROLES', '
                 })
         }
         $scope.logout = function() {
-            Session.logout();
-            $scope.currentUser = undefined;
-            $state.go('login');
+            Session.logout(function() {
+                $scope.currentUser = undefined;
+                $state.go('login');
+            });
         }
         getSectors;
 

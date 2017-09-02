@@ -8,12 +8,12 @@ controllersModule.controller('profileController', ['$scope', '$state', '$statePa
     $scope.getProfile = function(id) {
         if (token) {
             profileService.getUserDetails(id, token).then(function(details) {
-                $scope.userProfile = details;
+                $scope.userProfile = details[0];
                 $scope.profile = {
-                    educations: details.educations,
-                    skills: details.skills,
-                    extra_info: details.extra_info,
-                    experiences: details.experiences
+                    educations: details[0].educations,
+                    skills: details[0].skills,
+                    extra_info: details[0].extra_info,
+                    experiences: details[0].experiences
                 }
                 $state.go('home.userProfile');
             }, function() {});
